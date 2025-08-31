@@ -223,7 +223,47 @@
 
       <!-- Wilayah & Kode -->
       <div class="content wilayah-kode hidden">
+        <div class="content-header">
+          <h1>Provinsi <span  class="nama-provinsi"></span></h1>
+          <img alt="" class="lambang-daerah">
+        </div>
+        <hr>
+        <div class="nav">
+          <button type="button" class="info-provinsi-btn-2">Info Provinsi</button>
+          <button type="button" class="wilayah-kode-btn-2">Wilayah & Kode</button>
+        </div>
+        <section id="wilayah-kode">
+        <!-- Deskripsi dinamis -->
+          <p class="text-info">
+            Terletak di wilayah bagian <b class="nama-wilayah"></b> Indonesia, provinsi <b class="nama-provinsi"></b> membentang dengan <b class="jumlah-kab"></b> kabupaten dan <b class="jumlah-kota"></b> kota. Di dalamnya terdapat <b class="jumlah-kecamatan"></b> kecamatan serta <b class="jumlah-kelurahan"></b> kelurahan/desa yang tersebar dari pesisir hingga pegunungan.
+          </p>
 
+          <main class="table">
+          <!-- Tab button -->
+            <section class="tab-title">
+              <h2 class="table-title"></h2>
+            </section>
+            <!-- Table Wrapper -->
+            <section id="table-wrapper" class="table-body">
+              <!-- Default kabupaten/kota -->
+               <table class="wilayah-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama Wilayah</th>
+                    <th>Tipe</th>
+                    <th>Lihat Detail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- diisi secara dinamis -->
+                </tbody>
+               </table>
+
+               <div class="pagination"></div>
+            </section>
+          </main>
+        </section>
       </div>
     </div>
   </div>
