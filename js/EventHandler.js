@@ -64,6 +64,17 @@ export default class EventHandlers {
       // Close
       dom.sidePanel.classList.remove("side-panel-open");
     })
+
+    // Click event tutup popup-panel
+    dom.popupCloseBtn.addEventListener("click", () => {
+      // closing class
+      dom.popupPanel.classList.add("popup-panel-closing");
+      
+      setTimeout(() => {
+        dom.popupPanel.classList.remove("popup-panel-open");
+        dom.popupPanel.classList.remove("popup-panel-closing");
+      }, 300);
+    })
   }
 
   // Zoom 
