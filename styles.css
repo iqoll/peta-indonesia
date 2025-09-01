@@ -1,0 +1,441 @@
+:root {
+	/* Background & surface */
+	--bg-body: #0f172a;
+	--bg-surface: #1e293b;
+	--bg-surface-alt: #0000000b;
+
+	/* Map */
+	--map-default: #334155; /* Warna default provinsi */
+	--map-hover: #38bdf8; /* Hover/selected provinsi */
+
+	/* Text */
+	--text-main: #f1f5f9; /* Teks utama */
+	--text-main-dark: #0f172a;
+	--text-muted: #94a3b8;
+
+	/* Accent & interactive */
+	--accent: #f59e0b;
+	--accent-dark: #fcd34d;
+	--interactive: #3b82f6;
+	--interactive-hover: #2563eb;
+}
+
+body {
+	font-family: sans-serif;
+	color: var(--text-main);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: #2d2733;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--interactive);
+}
+
+.peta-indonesia {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: max-content;
+	height: max-content;
+	min-height: 30em;
+	background-color: var(--bg-body);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.search-bar {
+	position: relative;
+	margin-top: 2em;
+	width: 35%;
+}
+
+.search-bar input {
+	padding: 8px;
+	color: var(--text-main);
+	background-color: var(--map-default);
+	border: 1px solid var(--bg-surface);
+	border-radius: 25px;
+	width: 100%;
+}
+
+.search-bar input:focus {
+	border: 1px solid var(--interactive);
+}
+
+.search-bar button {
+	position: absolute;
+	height: 100%;
+	width: 3rem;
+	top: 0;
+	right: 0;
+	background-color: transparent;
+	border: none;
+	border-radius: 25px;
+	cursor: pointer;
+	color: var(--text-main);
+}
+
+.popup-panel {
+	position: absolute;
+	background-color: var(--bg-surface);
+	padding: 1em;
+	width: 60%;
+	height: 62%;
+	top: 25%;
+	left: 25%;
+	max-width: 50em;
+	max-height: 100vh;
+	transition: 600ms cubic-bezier(0.77, 0, 0.18, 1);
+	z-index: -1;
+	border-radius: 25px;
+}
+
+.popup-panel .container {
+	padding-block: 2em;
+	transition: 200ms ease-out;
+}
+
+.popup-panel .container h2 {
+	margin-bottom: 1rem;
+}
+
+svg {
+	width: 100vw;
+	height: 100vh;
+}
+
+path {
+	fill: var(--map-default);
+	stroke: var(--bg-body);
+	transition: 100ms;
+}
+
+path:hover {
+	fill: var(--map-hover);
+}
+
+.side-panel {
+	position: fixed;
+	background-color: var(--bg-surface);
+	padding: 2em;
+	top: 0;
+	left: -30em;
+	width: 100%;
+	max-width: 30em;
+	height: 100vh;
+	transition: 600ms cubic-bezier(0.77, 0, 0.18, 1);
+	overflow: scroll;
+	z-index: 1;
+}
+
+.side-panel .container {
+	padding-block: 2em;
+	transition: 200ms ease-out;
+}
+
+hr {
+	height: 0.2rem;
+	background-color: var(--interactive);
+	border: none;
+	width: 100%;
+}
+
+/* Dynamic classes */
+.side-panel-open {
+	left: 0;
+}
+.popup-panel-open {
+	z-index: 1;
+}
+.hide {
+	opacity: 0;
+}
+.hidden {
+	display: none;
+}
+
+.close-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 3em;
+	height: 3em;
+	border: none;
+	background-color: var(--interactive);
+	color: var(--text-main);
+	transition: 100ms;
+	cursor: pointer;
+}
+.close-btn-pop {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 3em;
+	height: 3em;
+	border: none;
+	background-color: var(--interactive);
+	color: var(--text-main);
+	transition: 100ms;
+	cursor: pointer;
+}
+
+.active {
+	background-color: var(--interactive);
+}
+
+.loading {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	user-select: none;
+	transition: 200ms;
+}
+
+.loading-pop {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	user-select: none;
+	transition: 200ms;
+}
+
+.close-btn i {
+	font-size: 1.7em;
+}
+
+.close-btn:hover {
+	background-color: var(--interactive-hover);
+}
+
+.content-header {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.lambang-daerah {
+	width: 30%;
+	max-width: 20em;
+	margin-block: 1em;
+}
+
+.side-panel .container ul {
+	margin-top: 2em;
+	list-style: none;
+}
+
+.side-panel .container ul li {
+	margin-bottom: 2em;
+}
+
+.side-panel li {
+	margin-bottom: 1em;
+	font-size: 1.2em;
+}
+
+.side-panel ul ul {
+	margin-top: 1em;
+	font-size: 0.7em;
+	list-style: circle;
+	padding-left: 2em;
+}
+
+.side-panel strong {
+	color: var(--accent);
+}
+
+.side-panel .container .nav {
+	margin: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.nav button {
+	padding: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.side-panel .container .text-info {
+	margin-top: 1em;
+	padding: 1em;
+	background-color: var(--text-muted);
+	border-radius: 0 25px 0 25px;
+	color: var(--text-main-dark);
+}
+
+.side-panel .container .situs-web {
+	text-decoration: none;
+	color: var(--text-muted);
+}
+
+.side-panel .container .situs-web:hover {
+	color: var(--text-main);
+}
+
+.side-panel .container .situs-web:active {
+	color: var(--accent);
+}
+
+.side-panel .container .wilayah-kode section .tab-title {
+	margin-top: 1em;
+	padding: 0.2em;
+	border-radius: 25px;
+	display: flex;
+	justify-content: space-between;
+	background-color: var(--text-muted);
+}
+
+.side-panel .container .wilayah-kode section .table .tab-button #tab-kabkota,
+.side-panel .container .wilayah-kode section .table .tab-button #tab-kecamatan,
+.side-panel .container .wilayah-kode section .table .tab-button #tab-kelurahan {
+	display: inline-block;
+	padding: 0.3rem;
+	border-radius: 25px;
+	border: none;
+}
+
+.side-panel .container .info-provinsi span.nama-provinsi,
+.side-panel .container .wilayah-kode span.nama-provinsi {
+	color: var(--accent);
+}
+
+.side-panel .container .wilayah-kode .nama-wilayah,
+.side-panel .container .wilayah-kode .nama-provinsi,
+.side-panel .container .wilayah-kode .jumlah-kab,
+.side-panel .container .wilayah-kode .jumlah-kota,
+.side-panel .container .wilayah-kode .jumlah-kecamatan,
+.side-panel .container .wilayah-kode .jumlah-kelurahan {
+	color: var(--accent-dark);
+}
+
+table {
+	width: 100%;
+	color: #000;
+}
+
+table,
+th,
+td {
+	border-collapse: collapse;
+	padding: 1rem;
+}
+
+thead th {
+	position: sticky;
+	top: 0;
+	left: 0;
+	background-color: var(--interactive);
+}
+
+tbody tr:nth-child(even) {
+	background-color: var(--bg-surface-alt); //
+}
+
+tbody tr:hover {
+	background-color: #fff6;
+}
+
+tbody tr td {
+	text-align: center;
+}
+
+main.table {
+	background-color: var(--text-muted);
+	backdrop-filter: blur(7px);
+	border-radius: 0.8rem;
+}
+
+.table-body {
+	overflow: auto;
+}
+
+.table-title {
+	color: var(--text-main-dark);
+}
+
+table .detail {
+	padding: 0.3rem;
+	font-size: 0.8rem;
+	border-radius: 2rem;
+	background-color: var(--interactive);
+	cursor: pointer;
+	border: none;
+	text-decoration: none;
+}
+
+table .detail:hover {
+	background-color: var(--interactive-hover);
+}
+
+table .wilayah-btn {
+	padding: 0.2rem;
+	cursor: pointer;
+	border: none;
+}
+
+table .wilayah-btn:hover {
+	background-color: var(--text-main);
+}
+
+.table-body::-webkit-scrollbar {
+	width: 0.5rem;
+	height: 0.5rem;
+}
+
+.zoom-controls {
+	position: fixed;
+	top: 1em;
+	right: 1em;
+}
+
+.zoom-controls button {
+	display: block;
+	width: 1.5em;
+	height: 1.5em;
+	font-size: 2em;
+	background-color: var(--interactive);
+	color: var(--text-main);
+	border: 1px solid #dcbfff;
+	cursor: pointer;
+}
+
+.zoom-controls button:hover {
+	background-color: var(--interactive-hover);
+}
+
+button:disabled {
+	border: 1px solid (--interactive);
+	cursor: default;
+	color: var(--text-muted);
+}
+
+.zoom-out {
+	margin-bottom: 10px;
+}
