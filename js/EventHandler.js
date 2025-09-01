@@ -7,6 +7,7 @@ export default class EventHandlers {
 
   initEvents() {
     this.handlePathProvinsi();
+    this.handleSearchQuery();
     this.handleCloseBtn();
     this.handleZoom();
   }
@@ -41,6 +42,18 @@ export default class EventHandlers {
 
         });
       })
+    })
+  }
+
+  // Search Query
+  handleSearchQuery() {
+    dom.searchBtn.addEventListener("click", async () => {
+      const namaDaerah = dom.searchInput.value;
+      // Popup-panel open
+      dom.popupPanel.classList.add("popup-panel-open")
+      
+      dom.searchQuery.innerText = namaDaerah;
+      dom.searchInput.value = "";
     })
   }
 
