@@ -1,4 +1,4 @@
-import dom from "./DomElements";
+import dom from "./DomElements.js";
 
 export default class EventHandlers {
   constructor() {
