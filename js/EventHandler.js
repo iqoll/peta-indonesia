@@ -1,4 +1,5 @@
 import dom from "./DomElements.js";
+import { keywordSearch } from "./ApiServices.js";
 
 export default class EventHandlers {
   constructor() {
@@ -54,6 +55,21 @@ export default class EventHandlers {
       
       dom.searchQuery.innerText = namaDaerah;
       dom.searchInput.value = "";
+
+      // Ambil data untuk table query search
+      const data = await keywordSearch(namaDaerah);
+      const rowsPerPage = 5; // max row di 1 page table
+      let currentPage = 1;
+
+      function renderTableQuery(page = 1) {
+
+      }
+
+      function renderPaginationQuery() {
+
+      }
+
+      renderTableQuery(currentPage);
     })
   }
 
