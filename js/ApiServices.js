@@ -1,3 +1,4 @@
+import { findField, findFieldMulti } from "./Utils.js";
 // Mapping provinsi ID untuk CloudAlert
 const provinsiMap = {
   "Bali": 1,
@@ -61,6 +62,61 @@ export async function getProvinsiData(namaProvinsi) {
 
     const json = await res.json();
 
+    // cari item yang punya infobox provinsi
+    const provinsiBox = json.find(item =>
+      item.infoboxes?.some(info => info.name?.toLowerCase().includes("provinsi"))
+    );
+    if (!provinsiBox) {
+      console.log("Data provinsi tidak ditemukan");
+      return null;
+    }
+
+    // ambil infobox utama
+    const kotakInfo = provinsiBox.infoboxes.find(info =>
+      info.name?.toLowerCase().includes("provinsi")
+    );
+    if (!kotakInfo || !kotakInfo.has_parts) {
+      console.log("Infobox provinsi tidak ditemukan atau tidak punya has_parts");
+      return null;
+    }
+
+    // thumbnail dari Wikipedia REST
+    const wikiRes = await fetch(
+      `https://id.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(namaProvinsi)}`
+    );
+    const wikiData = await wikiRes.json();
+    const thumbnail = wikiData.thumbnail?.source || "";
+
+    // data kab/kota dari CloudAlert
+    const id = provinsiMap[namaProvinsi];
+    let kabKota = [];
+    if (id) {
+      const kabKotaRes = await fetch(
+        `https://alamat.thecloudalert.com/api/kabkota/get/?d_provinsi_id=${id}`
+      );
+      const kabKotaData = await kabKotaRes.json();
+      kabKota = kabKotaData.result || [];
+    }
+
+    // Ambil field-field
+    const gubernur = findField(kotakInfo.has_parts, "Gubernur");
+    const ibuKota = findField(kotakInfo.has_parts, "Ibu kota");
+    const hariJadi = findField(kotakInfo.has_parts, "Hari jadi");
+    const luasWilayah = findFieldMulti(
+      kotakInfo.has_parts,
+      ["Total"],
+      ["Luas Wilayah", "Luas", "Luas wilayah"]
+    );
+    const populasi = findFieldMulti(
+      kotakInfo.has_parts,
+      ["Total"],
+      ["Populasi", "Populasi (31 Desember 2024)", "Populasi (30 Juni 2024)", "Populasi (2022)", "Populasi (2023)"]
+    );
+    const ipm = findField(kotakInfo.has_parts, "IPM");
+    const faunaResmi = findField(kotakInfo.has_parts, "Fauna resmi");
+    const situsWeb = findField(kotakInfo.has_parts, "Situs web");
+
+    return {kabKota ,thumbnail, gubernur, ibuKota, hariJadi, luasWilayah, populasi, ipm, faunaResmi, situsWeb}
 
   } catch (error) {
     console.error("Error fetching data: ", error);

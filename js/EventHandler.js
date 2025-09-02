@@ -1,5 +1,8 @@
 import dom from "./DomElements.js";
-import { keywordSearch } from "./ApiServices.js";
+import { 
+  keywordSearch,
+  getProvinsiData,
+ } from "./ApiServices.js";
 
 export default class EventHandlers {
   constructor() {
