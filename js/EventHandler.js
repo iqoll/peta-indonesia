@@ -106,7 +106,91 @@ export default class EventHandlers {
       }
 
       function renderPaginationQuery() {
+        const totalPages = Math.ceil(data.length / rowsPerPage);
+        const pagination = document.querySelector(".pagination-query");
+        pagination.innerHTML = "";
 
+        const maxVisible = 5; 
+
+        // Prev button
+        const prev = document.createElement("button");
+        prev.textContent = "Prev";
+        prev.disabled = currentPage === 1;
+        prev.onclick = () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderTableQuery(currentPage);
+          }
+        };
+        pagination.appendChild(prev);
+
+        // tampilkan halaman pertama
+        addPageButton(1)
+
+        // Rentang halaman
+        let start = Math.max(2, currentPage - Math.floor(maxVisible / 2));
+        let end = Math.min(totalPages - 1, currentPage + Math.floor(maxVisible / 2));
+
+        // kalau dekat awal
+        if (currentPage <= Math.floor(maxVisible / 2) + 2) {
+          end = Math.min(totalPages - 1, maxVisible + 1);
+        }
+        // kalau dekat akhir
+        if (currentPage >= totalPages - Math.floor(maxVisible /2) - 1) {
+          start = Math.max(2, totalPages - maxVisible);
+        }
+
+        // titik-titik sebelum rentang tengah
+        if (start > 2) {
+          pagination.appendChild(buatTitik());
+        }
+
+        // halaman tengah
+        for (let i = start; i <= end; i++) {
+          addPageButton(i);
+        }
+
+        // titik-titik setelah rentang tengah
+        if (end < totalPages - 1) {
+          pagination.appendChild(buatTitik())
+        }
+
+        // selalu tampilkan halaman terakhir kalau > 1
+        if (totalPages > 1) {
+          addPageButton(totalPages);
+        }
+
+        // Next button
+        const next = document.createElement("button");
+        next.textContent = "Next";
+        next.disabled = currentPage === totalPages;
+        next.onclick = () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderTableQuery(currentPage);
+          }
+        };
+        pagination.appendChild(next);
+
+        // function helper: buat tombol halaman 
+        function addPageButton(page) {
+          const btn = document.createElement("button");
+          btn.textContent = page;
+          if(page === currentPage) btn.disabled = true;
+          btn.onclick = () => {
+            currentPage = page;
+            renderTableQuery(currentPage);
+          }
+          pagination.appendChild(btn)
+        }
+      
+        // function helper: buat titik (...)
+        function buatTitik() {
+          const span = document.createElement("span");
+          span.textContent = "...";
+          span.style.margin = "0 5px";
+          return span;
+        }
       }
 
       renderTableQuery(currentPage);
