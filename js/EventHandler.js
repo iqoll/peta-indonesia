@@ -62,7 +62,47 @@ export default class EventHandlers {
       let currentPage = 1;
 
       function renderTableQuery(page = 1) {
+        const tbody = document.querySelector("#query-table tbody");
+        tbody.innerHTML = ""; //clear isi table
 
+        // range data
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const pageData = data.slice(start, end);
+
+        // render rows
+        pageData.forEach((item, index) => {
+          const tr = document.createElement("tr");
+
+          const tdNo = document.createElement("td");
+          tdNo.textContent = start + index + 1;
+
+          const tdProv = document.createElement("td");
+          tdProv.textContent = item.provinsi;
+
+          const tdKabKota = document.createElement("td");
+          tdKabKota.textContent = item.kabkota;
+
+          const tdKec = document.createElement("td");
+          tdKec.textContent = item.kecamatan;
+
+          const tdKelurahan = document.createElement("td");
+          tdKelurahan.textContent = item.desakel;
+      
+          const tdKodepos = document.createElement("td");
+          tdKodepos.textContent = item.kodepos;
+
+          tr.appendChild(tdNo);
+          tr.appendChild(tdProv);
+          tr.appendChild(tdKabKota);
+          tr.appendChild(tdKec);
+          tr.appendChild(tdKelurahan);
+          tr.appendChild(tdKodepos);
+
+          tbody.appendChild(tr);
+        });
+        
+        renderPaginationQuery();
       }
 
       function renderPaginationQuery() {
