@@ -3,7 +3,7 @@ import {
   keywordSearch,
   getProvinsiData,
  } from "./ApiServices.js";
-
+import { jumlahKabKota, jumlahKecamatan, jumlahKelurahan } from "./Calculation.js";
 export default class EventHandlers {
   constructor() {
     this.initEvents();
@@ -95,6 +95,24 @@ export default class EventHandlers {
             } else {
                 dom.namaWilayahOutput.innerText = "Timur";
             }
+
+            // Jumlah Kabupaten/Kota
+            const jumKabKot = jumlahKabKota(data.kabKota || []);
+            dom.jumlahKabOutput.innerText = jumKabKot.jumlahKab;
+            dom.jumlahKotaOutput.innerText = jumKabKot.jumlahKota;
+            
+            // Jumlah kecamatan
+            (async () => {
+              const jumKecamatan = await jumlahKecamatan(data.kabKota || []);
+              dom.jumlahKecOutput.innerText = jumKecamatan;
+            })();
+
+            // Jumlah kelurahan
+            (async () => {
+              dom.jumlahKelOutput.innerText = "..."; // Tampilan loading
+              const jumKelurahan = await jumlahKelurahan(data.kabKota || []);
+              dom.jumlahKelOutput.innerText = jumKelurahan;
+            })();
 
             // waktu menunggu lambang daerah baru load
             dom.lambangDaerahOutput.forEach(lambang => {
