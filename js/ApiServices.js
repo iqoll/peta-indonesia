@@ -123,3 +123,20 @@ export async function getProvinsiData(namaProvinsi) {
     return null;
   }
 }
+
+//  === CloudAlert detail ===
+export async function getKecamatanData(idKabKota) {
+  const res = await fetch(`https://alamat.thecloudalert.com/api/kecamatan/get/?d_kabkota_id=${idKabKota}`);
+  const data = await res.json();
+  return data.result;
+}
+export async function getKodePosData(idKabKota, idKecamatan) {
+  const res = await fetch(`https://alamat.thecloudalert.com/api/kodepos/get/?d_kabkota_id=${idKabKota}&d_kecamatan_id=${idKecamatan}`);
+  const data = await res.json();
+  return data.result;
+}
+export async function getKelurahanData(idKecamatan) {
+  const res = await fetch(`https://alamat.thecloudalert.com/api/kelurahan/get/?d_kecamatan_id=${idKecamatan}`);
+  const data = await res.json();
+  return data.result;
+}

@@ -70,6 +70,32 @@ export default class EventHandlers {
             dom.infoProvinsiBtn.classList.add("active");
             dom.infoProvinsiBtn.disabled = true;
 
+            // nama wilayah berdasarkan provinsi untuk text-info
+            if (
+              namaProvinsi.includes("Sumatera") ||
+              namaProvinsi.includes("Jawa") ||
+              namaProvinsi.includes("Jambi") ||
+              namaProvinsi.includes("Aceh") ||
+              namaProvinsi.includes("Riau") ||
+              namaProvinsi.includes("Daerah") ||
+              namaProvinsi.includes("Banten") ||
+              namaProvinsi.includes("Bangka") 
+            ) {
+                dom.namaWilayahOutput.innerText = "Barat";
+            } else if (
+                namaProvinsi.includes("Kalimantan") 
+            ) {
+                dom.namaWilayahOutput.innerText = "Tengah-Utara";
+            } else if (
+                namaProvinsi.includes("Sulawesi") ||           
+                namaProvinsi.includes("Bali") ||        
+                namaProvinsi.includes("Nusa Tenggara")         
+            ) {
+                dom.namaWilayahOutput.innerText = "Tengah-Timur";
+            } else {
+                dom.namaWilayahOutput.innerText = "Timur";
+            }
+
             // waktu menunggu lambang daerah baru load
             dom.lambangDaerahOutput.forEach(lambang => {
               lambang.onload = () => {
@@ -307,6 +333,7 @@ export default class EventHandlers {
     });
   }
 
+  // Toggle btn for changing side-panel content
   handleToggle() {
     // Click event untuk menunjukkan section wilayah & kode
     dom.wilayahKodeBtn.addEventListener("click", () => {
