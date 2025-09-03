@@ -54,8 +54,13 @@ export async function keywordSearch(namaDaerah) {
 */
 export async function getProvinsiData(namaProvinsi) {
   // Wikimedia API untuk data-data infoboxes
+  const baseUrl = 
+    process.env.NODE_ENV === "production"
+      ? "https://my-app.vercel.app/api"
+      : "http://localhost:5000";
+
   try {
-    const res = await fetch(`http://localhost:5000/provinsi/${encodeURIComponent(namaProvinsi)}`)
+    const res = await fetch(`${baseUrl}/provinsi?nama=${encodeURIComponent(namaProvinsi)}`)
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
