@@ -14,6 +14,7 @@ export default class EventHandlers {
     this.handleSearchQuery();
     this.handleCloseBtn();
     this.handleZoom();
+    this.handleToggle();
   }
 
   // Loop ke setiap path svg provinsi
@@ -304,5 +305,20 @@ export default class EventHandlers {
       // Output zoom value percentage
       dom.zoomValueOutput.innerText = zoomValue + "%";
     });
+  }
+
+  handleToggle() {
+    // Click event untuk menunjukkan section wilayah & kode
+    dom.wilayahKodeBtn.addEventListener("click", () => {
+      dom.infoProvinsi.classList.add("hidden");
+      dom.wilayahKode.classList.remove("hidden");
+      dom.wilayahKodeBtn2.classList.add("active");
+      dom.wilayahKodeBtn2.disabled = true;
+    })
+    // Click event untuk info provinsi
+    dom.infoProvinsiBtn2.addEventListener("click", () => {
+      dom.wilayahKode.classList.add("hidden");
+      dom.infoProvinsi.classList.remove("hidden");
+    })
   }
 }
