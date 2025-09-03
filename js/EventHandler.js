@@ -68,6 +68,16 @@ export default class EventHandlers {
 
             dom.infoProvinsiBtn.classList.add("active");
             dom.infoProvinsiBtn.disabled = true;
+
+            // waktu menunggu lambang daerah baru load
+            dom.lambangDaerahOutput.forEach(lambang => {
+              lambang.onload = () => {
+              // Show the container dengan info provinsi
+              dom.container.classList.remove("hide");
+              // Hide loading screen
+              dom.loading.classList.add("hide")
+            }
+            });
           }, 500); 
         });
       })
