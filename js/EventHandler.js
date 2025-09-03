@@ -2,6 +2,9 @@ import dom from "./DomElements.js";
 import { 
   keywordSearch,
   getProvinsiData,
+  getKecamatanData,
+  getKelurahanData,
+  getKodePosData
  } from "./ApiServices.js";
 import { jumlahKabKota, jumlahKecamatan, jumlahKelurahan } from "./Calculation.js";
 export default class EventHandlers {
@@ -122,7 +125,106 @@ export default class EventHandlers {
             let currentFetcher = null;
 
             function renderTable(page = 1) {
+              // Mengisi data untuk wilayah & kode
+              const tbody = document.querySelector(".wilayah-table tbody");
+              const tTitle = document.querySelector(".table-title");
+              tTitle.innerText = currentTipe;
+              // clear table
+              tbody.innerHTML = "";
+            
+              // hitung range data
+              const start = (page - 1) * rowsPerPage;
+              const end = start + rowsPerPage;
+              const pageData = currentData.slice(start, end);
 
+              pageData.forEach((item, index) => {
+                const tr = document.createElement("tr");
+
+                // No
+                const tdNo = document.createElement("td");
+                tdNo.textContent = index + 1;
+
+                // Nama Wilayah -> button kalo ada fetcher
+                const tdWilayah = document.createElement("td");
+                if (currentFetcher) {
+                  const btn = document.createElement("button");
+                  btn.classList.add("wilayah-btn")
+                  btn.textContent = item.text;
+                  btn.onclick = async () => {
+                    const nextData = await currentFetcher(item.id);
+                    if (currentTipe === "Kab/Kota") {
+                      currentData = nextData.map(k => ({ ...k, parentKabKotaId: item.id })); // parentKabkKota untuk kode pos nanti
+                      currentTipe = "Kecamatan";
+                      currentFetcher = getKelurahanData;
+                    } else if (currentTipe = "Kecamatan") {
+                      currentData = nextData;
+                      currentTipe = "Kelurahan";
+                      currentFetcher = null;
+                    }
+              
+                    currentPage = 1;
+                    renderTable(currentPage);
+                  };
+                  tdWilayah.appendChild(btn);
+                } else {
+                  tdWilayah.textContent = item.text;
+                }
+
+                // Tipe
+                const tdTipe = document.createElement("td");
+                if (currentTipe === "Kab/Kota") {
+                  tdTipe.textContent = item.text.startsWith("Kota") ? "Kota" : "Kabupaten";
+                } else {
+                  tdTipe.textContent = currentTipe;
+                }
+
+                // Link Detail
+                const tdDetail = document.createElement("td");
+                const a = document.createElement("a");
+                a.href = `https://id.wikipedia.org/wiki/${item.text}`;
+                a.target = "_blank"
+                a.textContent = "Detail";
+                a.classList.add("detail");
+                tdDetail.appendChild(a)
+
+                // Kode pos
+                if (currentTipe === "Kecamatan") {
+                  const kodeBtn = document.createElement("button");
+                  kodeBtn.textContent = "Kode Pos";
+
+                  // span untuk menampilkan hasil
+                  const kodeSpan = document.createElement("span");
+                  kodeSpan.style.marginLeft = "8px"; // biar agak renggang
+
+                  kodeBtn.onclick = async () => {
+                    try {
+                      const kodePos = await getKodePosData(item.parentKabKotaId, item.id);
+                      if (!Array.isArray(kodePos) || kodePos.length === 0) {
+                        kodeSpan.textContent = "kode pos: tidak ditemukan";
+                        return;
+                      }
+                      // tulis semua kode pos (kalau ada lebih dari satu)
+                      kodeSpan.textContent = "kode pos: " + kodePos.map(k => k.text).join(", ");
+                    } catch (e) {
+                      console.error(e);
+                      kodeSpan.textContent = "kode pos: gagal load";
+                    }
+                  };
+
+                  tdDetail.appendChild(kodeBtn);
+                  tdDetail.appendChild(kodeSpan);
+                };
+                // Gabung ke row
+                tr.appendChild(tdNo);
+                tr.appendChild(tdWilayah);
+                tr.appendChild(tdTipe);
+                tr.appendChild(tdDetail);
+
+                // Gabung ke body
+                tbody.appendChild(tr)
+              });
+
+              renderPagination();
             }
 
             function renderPagination() {
