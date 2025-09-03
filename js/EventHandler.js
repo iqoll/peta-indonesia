@@ -43,7 +43,32 @@ export default class EventHandlers {
 
         // Informasi Provinsi berdasarkan nama provinsi yang di klik
         getProvinsiData(namaProvinsi).then(data => {
+          // untuk lambang provinsi dari wikipedia delay 1/2 detik
+          setTimeout(() => {
+            // mengisi data/text di html
+            if (!data) {
+              dom.loading.innerText = "Data tidak ditemukan";
+              return;
+            }
+            dom.namaProvinsiOutput.forEach(nama => {
+              nama.innerText = namaProvinsi;
+            })
+            dom.lambangDaerahOutput.forEach(lambang => {
+              lambang.src = data.thumbnail
+            });
+            dom.ibuKotaOutput.innerText = data.ibuKota;
+            dom.gubernurOutput.innerText = data.gubernur;
+            dom.hariJadiOutput.innerText = data.hariJadi;
+            dom.wilayahOutput.innerText = data.luasWilayah;
+            dom.populasiOutput.innerText = data.populasi;
+            dom.ipmOutput.innerText = data.ipm;
+            dom.faunaResmiOutput.innerText = data.faunaResmi;
+            dom.situsWebOutput.innerText = data.situsWeb;
+            dom.situsWebOutput.href = `https://${data.situsWeb}`;
 
+            dom.infoProvinsiBtn.classList.add("active");
+            dom.infoProvinsiBtn.disabled = true;
+          }, 500); 
         });
       })
     })
