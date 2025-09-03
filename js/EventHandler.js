@@ -114,6 +114,27 @@ export default class EventHandlers {
               dom.jumlahKelOutput.innerText = jumKelurahan;
             })();
 
+            /* === Side Panel Table === */
+            const rowsPerPage = 10;
+            let currentPage = 1;
+            let currentData = [];
+            let currentTipe = "Kab/kota";
+            let currentFetcher = null;
+
+            function renderTable(page = 1) {
+
+            }
+
+            function renderPagination() {
+
+            }
+
+            // Inisialisasi pertama (kab/kota) dan render table pertama kali
+            currentData = data.kabKota || [];
+            currentTipe = "Kab/Kota";
+            currentFetcher = getKecamatanData;
+            renderTable(currentPage)
+
             // waktu menunggu lambang daerah baru load
             dom.lambangDaerahOutput.forEach(lambang => {
               lambang.onload = () => {
