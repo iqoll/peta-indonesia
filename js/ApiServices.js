@@ -55,7 +55,7 @@ export async function keywordSearch(namaDaerah) {
 export async function getProvinsiData(namaProvinsi) {
   // Wikimedia API untuk data-data infoboxes
   try {
-    const res = await fetch(`api/provinsi/${encodeURIComponent(namaProvinsi)}`)
+    const res = await fetch(`/api/provinsi?nama=${encodeURIComponent(namaProvinsi)}`)
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
