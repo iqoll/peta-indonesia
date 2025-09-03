@@ -126,7 +126,45 @@ export default class EventHandlers {
             }
 
             function renderPagination() {
+              const totalPages = Math.ceil(currentData.length / rowsPerPage);
+              const pagination = document.querySelector(".pagination");
+              pagination.innerHTML = "";
 
+              // Prev button
+              const prev = document.createElement("button");
+              prev.textContent = "Prev";
+              prev.disabled = currentPage === 1;
+              prev.onclick = () => {
+                if (currentPage > 1) {
+                  currentPage--;
+                  renderTable(currentPage)
+                }
+              };
+              pagination.appendChild(prev);
+
+              // nomor halaman
+              for(let i=1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                if (i === currentPage) btn.disabled = true;
+                btn.onclick = () => {
+                  currentPage = i;
+                  renderTable(currentPage);
+                };
+                pagination.appendChild(btn)
+            }
+
+            // Next button
+            const next = document.createElement("button");
+            next.textContent = "Next";
+            next.disabled = currentPage === totalPages;
+            next.onclick = () => {
+              if(currentPage < totalPages) {
+                currentPage++;
+                renderTable(currentPage);
+              }
+            };
+            pagination.appendChild(next)
             }
 
             // Inisialisasi pertama (kab/kota) dan render table pertama kali
